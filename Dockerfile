@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir aiogram python-dotenv
+# Pin aiogram 2.x to match the bot source code
+RUN pip install --no-cache-dir aiogram==2.25.1 python-dotenv
 
 CMD ["python", "bot.py"]
