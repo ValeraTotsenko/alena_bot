@@ -34,7 +34,7 @@ async def send_posts(chat_id: int):
                 await bot.send_animation(chat_id, InputFile(path))
             elif ext in {'.mov', '.mp4'}:
                 await bot.send_video(chat_id, InputFile(path))
-        await bot.send_message(chat_id, post['text'], parse_mode='Markdown')
+        await bot.send_message(chat_id, post['text'], parse_mode="HTML")
         await asyncio.sleep(DELAY_BETWEEN_POSTS)
 
 
