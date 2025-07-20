@@ -1,0 +1,13 @@
+[Unit]
+Description=Alena Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/alena_bot
+EnvironmentFile=/opt/alena_bot/config/bot.env
+ExecStart=/opt/alena_bot/venv/bin/python bot.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
