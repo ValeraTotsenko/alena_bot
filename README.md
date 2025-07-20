@@ -69,7 +69,7 @@ Copy
 Edit
 for post in load_posts_from_json():
     await bot.send_media_group(chat_id, [InputMedia(…)] if media else None)
-    await bot.send_message(chat_id, post["text"], parse_mode="Markdown")
+    await bot.send_message(chat_id, post["text"], parse_mode="HTML")
     await asyncio.sleep(DELAY_BETWEEN_POSTS)  # 10 сек
 Использовать send_photo, send_animation или send_video в зависимости от расширения файла (.jpg → photo, .gif → animation, .mov → video).
 

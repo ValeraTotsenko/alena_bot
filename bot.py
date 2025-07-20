@@ -51,7 +51,7 @@ async def start(message: types.Message):
         f"{user.first_name}, лови статью «Чек‑ап женского здоровья: как не пропустить "
         f"важное и сохранить молодость?»\n\n{GOOGLE_DRIVE_URL}"
     )
-    await message.answer(greeting)
+    await message.answer(greeting, parse_mode="HTML")
     await send_posts(message.chat.id)
     subscribed = await check_subscription(user.id)
     if not subscribed:
@@ -60,7 +60,7 @@ async def start(message: types.Message):
             url=f'https://t.me/{CHANNEL_USERNAME.lstrip("@")}'
         )
         markup = InlineKeyboardMarkup().add(button)
-        await message.answer('Подпишись на канал, чтобы не пропустить важное!', reply_markup=markup)
+        await message.answer('Подпишись на канал, чтобы не пропустить важное!', reply_markup=markup, parse_mode="HTML")
     update_subscription(LOG_FILE, user.id, 'yes' if subscribed else 'no')
 
 
