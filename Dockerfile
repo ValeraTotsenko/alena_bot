@@ -2,9 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY . /app
+COPY requirements.txt /app/
+# Install Python dependencies (aiogram 2.x and dotenv)
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Pin aiogram 2.x to match the bot source code
-RUN pip install --no-cache-dir aiogram==2.25.1 python-dotenv
+COPY . /app
 
 CMD ["python", "bot.py"]
