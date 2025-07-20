@@ -25,7 +25,7 @@ This file is listed in `.gitignore`, so your credentials will not be committed t
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install aiogram python-dotenv
+ pip install aiogram==2.25.1 python-dotenv
 ```
 
 4. **Run the bot**
