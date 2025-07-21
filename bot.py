@@ -45,22 +45,40 @@ async def check_subscription(user_id: int) -> bool:
 
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
+    """Handle /start: greet user and show start button."""
     user = message.from_user
     append_log(LOG_FILE, user)
     greeting = (
         f"{user.first_name}, лови статью «Чек‑ап женского здоровья: как не пропустить "
         f"важное и сохранить молодость?»\n\n{GOOGLE_DRIVE_URL}"
     )
-    await message.answer(greeting, parse_mode="Markdown")
-    await send_posts(message.chat.id)
+    button = InlineKeyboardButton('▶️ Начать', callback_data='start_posts')
+    markup = InlineKeyboardMarkup().add(button)
+    await message.answer(greeting, parse_mode="Markdown", reply_markup=markup)
+
+
+@dp.callback_query_handler(lambda c: c.data == 'start_posts')
+async def process_start(callback_query: types.CallbackQuery):
+    """Send posts and subscription button when user presses start."""
+    await callback_query.answer()
+    chat_id = callback_query.message.chat.id
+    user = callback_query.from_user
+
+    await send_posts(chat_id)
     subscribed = await check_subscription(user.id)
-    if not subscribed:
-        button = InlineKeyboardButton(
-            '🔔 Подписаться на канал',
-            url=f'https://t.me/{CHANNEL_USERNAME.lstrip("@")}'
-        )
-        markup = InlineKeyboardMarkup().add(button)
-        await message.answer('Подпишись на канал, чтобы не пропустить важное!', reply_markup=markup, parse_mode="Markdown")
+    if subscribed:
+        text = 'Перейти в канал:'
+        button_text = '➡️ Перейти в канал'
+    else:
+        text = 'Подпишись на канал, чтобы не пропустить важное!'
+        button_text = '🔔 Подписаться на канал'
+
+    button = InlineKeyboardButton(
+        button_text,
+        url=f'https://t.me/{CHANNEL_USERNAME.lstrip("@")}'
+    )
+    markup = InlineKeyboardMarkup().add(button)
+    await bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
     update_subscription(LOG_FILE, user.id, 'yes' if subscribed else 'no')
 
 
