@@ -52,7 +52,7 @@ async def start(message: types.Message):
     button = InlineKeyboardButton("▶️ Начать", callback_data="start_posts")
     markup = InlineKeyboardMarkup().add(button)
     await message.answer(
-        "Нажмите «Начать», чтобы получить статью и серию постов", reply_markup=markup
+        "Нажмите «Начать», чтобы получить статью", reply_markup=markup
     )
 
 
@@ -69,6 +69,8 @@ async def process_start(callback_query: types.CallbackQuery):
         f"важное и сохранить молодость?»\n\n{GOOGLE_DRIVE_URL}"
     )
     await bot.send_message(chat_id, greeting, parse_mode="Markdown")
+
+    await asyncio.sleep(DELAY_BETWEEN_POSTS)
 
     await send_posts(chat_id)
     subscribed = await check_subscription(user.id)
